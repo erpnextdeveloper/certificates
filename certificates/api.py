@@ -22,3 +22,44 @@ import logging
 @frappe.whitelist()
 def test(doc,method):
 	frappe.db.sql("""update `tabCertificate` set parent=%s,parentfield='crewmember_certificates',parenttype='Employee' where name=%s""",(doc.employee_link,doc.name))
+
+
+@frappe.whitelist()
+def addCertificateOwnerInformer(doc,method):
+	data=frappe.db.sql("""select name from `tabCertificate Informer` where certificate_id=%s""",doc.name)
+	if data:
+		doc1=frappe.get_doc("Certificate Informer",data[0][0])
+		doc1.owner_certicate=str(doc.employee_link)
+		doc1.owner_id=str(getUserId(doc.employee_link))
+		doc1.informer_certificate=str(doc.cert_who_informed)
+		doc1.informer_id=str(getUserId(doc.cert_who_informed))
+		doc1.save()
+	else:
+		doc1=frappe.get_doc({
+				"docstatus": 0,
+				"doctype": "Certificate Informer",
+				"name": "New Certificate Informer 1",
+				"owner_certicate":str(doc.employee_link),
+				"parent":str(doc.employee_link),
+				"parentfield": "certificate_informer",
+				"parenttype": "Employee",
+				"certificate_id":str(doc.name),
+				"owner_id":str(getUserId(doc.employee_link)),
+				"informer_certicate":str(doc.cert_who_informed),
+				"informer_id":str(getUserId(doc.cert_who_informed))
+			})
+		doc1.insert()
+	
+
+
+@frappe.whitelist()
+def getUserId(emp_code):
+	doc=frappe.get_doc("Employee",emp_code)
+	if doc.user_id:
+		return doc.user_id
+	elif doc.personal_email:
+		return doc.personal_emal
+	else:
+		return str()
+		 
+	

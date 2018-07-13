@@ -30,6 +30,10 @@ app_license = "MIT"
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+doctype_js = {
+    "Certificate":["custom_script/certificate_custom.js"]
+}
+
 
 # Home Pages
 # ----------
@@ -81,7 +85,10 @@ app_license = "MIT"
 
 doc_events = {
  	"Certificate": {
- 		"after_insert": "certificates.api.test"
+ 		"after_insert":["certificates.api.test",
+				"certificates.api.addCertificateOwnerInformer"],
+		"on_change":["certificates.api.test",
+				"certificates.api.addCertificateOwnerInformer"]
 	}
  }
 
