@@ -1,3 +1,5 @@
+cur_frm.add_fetch("employee_link","user_id","user_id");
+cur_frm.add_fetch("cert_who_informed","user_id","informer_id");
 var count=1
 frappe.ui.form.on("Certificate", "add_more_attachment", function(frm, cdt, cdn) {
 count=count+1
