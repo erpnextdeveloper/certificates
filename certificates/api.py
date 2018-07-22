@@ -33,6 +33,7 @@ def addCertificateOwnerInformer(doc,method):
 		doc1.owner_id=str(getUserId(doc.employee_link))
 		doc1.informer_certificate=str(doc.cert_who_informed)
 		doc1.informer_id=str(getUserId(doc.cert_who_informed))
+		doc1.certificate_expiration=str(doc.certificate_expiration)
 		doc1.save()
 	else:
 		doc1=frappe.get_doc({
@@ -40,13 +41,14 @@ def addCertificateOwnerInformer(doc,method):
 				"doctype": "Certificate Informer",
 				"name": "New Certificate Informer 1",
 				"owner_certicate":str(doc.employee_link),
-				"parent":str(doc.employee_link),
+				"parent":str(doc.cert_who_informed),
 				"parentfield": "certificate_informer",
 				"parenttype": "Employee",
 				"certificate_id":str(doc.name),
 				"owner_id":str(getUserId(doc.employee_link)),
 				"informer_certicate":str(doc.cert_who_informed),
-				"informer_id":str(getUserId(doc.cert_who_informed))
+				"informer_id":str(getUserId(doc.cert_who_informed)),
+				"certificate_expiration":str(doc.certificate_expiration)
 			})
 		doc1.insert()
 	
